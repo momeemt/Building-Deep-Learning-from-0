@@ -31,7 +31,9 @@ def identify_function(x):
 
 
 def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+    sigmoid_range = 34.538776394910684
+    x2 = np.maximum(np.minimum(x, sigmoid_range), -sigmoid_range)
+    return 1 / (1 + np.exp(-x2))
 
 
 def softmax(a):
@@ -42,12 +44,12 @@ def softmax(a):
     return y
 
 
-def main():
-    network = init_network()
-    x = np.array([1.0, 0.5])
-    y = forward(network, x)
-    print(y)
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     network = init_network()
+#     x = np.array([1.0, 0.5])
+#     y = forward(network, x)
+#     print(y)
+#
+#
+# if __name__ == "__main__":
+#     main()

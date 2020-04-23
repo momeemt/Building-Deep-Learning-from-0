@@ -1,2 +1,4 @@
 venv
 Book1/dataset
+sample_weight.pkl
+Book1/__pycache__
