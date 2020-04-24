@@ -39,12 +39,29 @@ def numerical_gradient(f, x):
     return grad
 
 
+def gradient_descent(f, init_x, lr=0.01, step_num=100):
+    x = init_x
+    for i in range(step_num):
+        grad = numerical_gradient(f, x)
+        x -= lr * grad
+    return x
+
 # print(numerical_diff(function_1, 5))
 # print(numerical_diff(function_1, 10))
 # print(numerical_diff(function_tmp1, 3.0))
 # print(numerical_diff(function_tmp2, 4.0))
 
 
-print(numerical_gradient(function_2, np.array([3.0, 4.0])))
-print(numerical_gradient(function_2, np.array([0.0, 2.0])))
-print(numerical_gradient(function_2, np.array([3.0, 0.0])))
+# print(numerical_gradient(function_2, np.array([3.0, 4.0])))
+# print(numerical_gradient(function_2, np.array([0.0, 2.0])))
+# print(numerical_gradient(function_2, np.array([3.0, 0.0])))
+
+init_x = np.array([-3.0, 4.0])
+print(gradient_descent(function_2, init_x=init_x, lr=0.1, step_num=100))
+
+# 学習率が大きすぎると...
+print(gradient_descent(function_2, init_x=init_x, lr=10.0, step_num=100))
+
+# 学習率が小さすぎると...
+print(gradient_descent(function_2, init_x=init_x, lr=1e-10, step_num=100))
+
