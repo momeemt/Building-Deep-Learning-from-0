@@ -56,12 +56,12 @@ def gradient_descent(f, init_x, lr=0.01, step_num=100):
 # print(numerical_gradient(function_2, np.array([0.0, 2.0])))
 # print(numerical_gradient(function_2, np.array([3.0, 0.0])))
 
-init_x = np.array([-3.0, 4.0])
-print(gradient_descent(function_2, init_x=init_x, lr=0.1, step_num=100))
-
-# 学習率が大きすぎると...
-print(gradient_descent(function_2, init_x=init_x, lr=10.0, step_num=100))
-
-# 学習率が小さすぎると...
-print(gradient_descent(function_2, init_x=init_x, lr=1e-10, step_num=100))
+# init_x = np.array([-3.0, 4.0])
+# print(gradient_descent(function_2, init_x=init_x, lr=0.1, step_num=100))
+#
+# # 学習率が大きすぎると...
+# print(gradient_descent(function_2, init_x=init_x, lr=10.0, step_num=100))
+#
+# # 学習率が小さすぎると...
+# print(gradient_descent(function_2, init_x=init_x, lr=1e-10, step_num=100))
 
