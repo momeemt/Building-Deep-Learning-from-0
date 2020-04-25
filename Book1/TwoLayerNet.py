@@ -1,8 +1,7 @@
 import sys
 import os
 import numpy as np
-from neural_network import *
-from neural_network_2 import *
+import layer as ly
 from numerical import numerical_gradient
 
 
@@ -15,25 +14,26 @@ class TwoLayerNet:
           'W2': weight_init_std * np.random.randn(hidden_size, output_size),
           'b2': np.zeros(output_size)
         }
+        self.layers = {
+          'Affine1': ly.Affine(self.params['W1'], self.params['b1']),
+          'Relu1': ly.Relu(),
+          'Affine2': ly.Affine(self.params['W2'], self.params['b2'])
+        }
+        self.lastLayer = ly.SoftmaxWithLoss()
 
     def predict(self, x):
-        W1, W2 = self.params['W1'], self.params['W2']
-        b1, b2 = self.params['b1'], self.params['b2']
-        a1 = np.dot(x, W1) + b1
-        z1 = sigmoid(a1)
-        a2 = np.dot(z1, W2) + b2
-        y = softmax(a2)
-
-        return y
+        for layer in self.layers.values():
+            x = layer.forward(x)
+        return x
 
     def loss(self, x, t):
         y = self.predict(x)
-        return cross_entropy_error(y, t)
+        return self.lastLayer.forward(y, t)
 
     def accuracy(self, x, t):
         y = self.predict(x)
         y = np.argmax(y, axis=1)
-        t = np.argmax(t, axis=1)
+        if t.dim != 1 : t = np.argmax(t, axis=1)
         accuracy = np.sum(y == t) / float(x.shape[0])
         return accuracy
 
@@ -47,6 +47,21 @@ class TwoLayerNet:
           'b2': numerical_gradient(loss_W, self.params['b2'])
         }
 
+        return grads
+
+    def gradient(self, x, t):
+        self.loss(x, t)
+        dout = 1
+        layers = list(self.layers.values())
+        layers.reverse()
+        for layer in layers:
+            dout = layer.backward(dout)
+        grads = {
+          'W1': self.layers['Affine1'].dW,
+          'b1': self.layers['Affine1'].db,
+          'W2': self.layers['Affine2'].dW,
+          'b2': self.layers['Affine2'].db
+        }
         return grads
 
 
