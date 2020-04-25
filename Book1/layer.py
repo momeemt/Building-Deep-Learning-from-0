@@ -1,4 +1,6 @@
 import numpy as np
+import neural_network as nn
+import neural_network_2 as nn2
 
 
 class MulLayer:
@@ -74,9 +76,27 @@ class Affine:
         self.x = x
         out = np.dot(x, self.W) + self.b
         return out
-    
+
     def backward(self, dout):
         dx = np.dot(dout, self.W.T)
         self.dW = np.dot(self.X.T, dout)
         self.db = np.sum(dout, axis=0)
+        return dx
+
+
+class SoftmaxWithLoss:
+    def __init__(self):
+        self.loss = None
+        self.y = None
+        self.t = None
+
+    def forward(self, x, t):
+        self.t = t
+        self.y = nn.softmax(x)
+        self.loss = nn2.cross_entropy_error(self.y, self.t)
+        return self.loss
+
+    def backward(self, dout=1):
+        batch_size = self.t.shape[0]
+        dx = (self.y - self.t) / batch_size
         return dx
